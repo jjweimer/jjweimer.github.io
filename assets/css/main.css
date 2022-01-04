@@ -2705,7 +2705,7 @@ input, select, textarea {
 						margin-bottom: 0;
 					}
 
-			/*			
+			/*
 			super bright blue robin egg - 4DD5FD
 			Nice blue - 4AA0E7
 			Teal - 1AB4B3
@@ -2738,8 +2738,8 @@ input, select, textarea {
 			.tiles article.style6 > .image:before {
 				background-color: #72C2BF;
 			}
-			/* .tiles article.style1 > .image:before {
-				background-color: #f2849e;
+			/*.tiles article.style7 > .image:before {
+				background-color: ##FF4500;
 			}
 
 			.tiles article.style2 > .image:before {
