@@ -258,7 +258,46 @@ lichess_data$date_time_PST &lt;- format(lichess_data$date_time_UTC,
 #extract the hour value of each observation in PST
 lichess_data$hour &lt;- format(as.POSIXct(lichess_data$date_time_PST),
                             format = &quot;%H&quot;)   </code></pre>
-<p>Next, I’ll clean the opening names. Chess openings have lots of variations, but I’m not interested in the variations when looking at how many times I’ve played each opening (as some openings can have many dozens of variations). For my analysis, I want all of the variations to be classified just as the base opening. Here I’ll standardize the opening names a little bit.</p>
+<p>Next, I’ll clean the opening names. Chess openings have lots of variations, but I’m not interested in the variations when looking at how many times I’ve played each opening (as some openings can have many dozens of variations). Let’s see how many variations I’ve encountered in my favorite opening: The Queen’s Gambit.</p>
+<pre class="r"><code>unique(lichess_data$Opening[grepl(&quot;Queen&#39;s Gambit&quot;,lichess_data$Opening,
+                   fixed = TRUE)])</code></pre>
+<pre><code>##  [1] &quot;Queen&#39;s Gambit Accepted: Old Variation&quot;                                      
+##  [2] &quot;Queen&#39;s Gambit Declined: Exchange Variation, Positional Variation&quot;           
+##  [3] &quot;Queen&#39;s Gambit Declined: Marshall Defense&quot;                                   
+##  [4] &quot;Queen&#39;s Gambit Declined: Queen&#39;s Knight Variation&quot;                           
+##  [5] &quot;Queen&#39;s Gambit Declined: Modern Variation, Normal Line&quot;                      
+##  [6] &quot;Queen&#39;s Gambit Declined: Vienna Variation, Quiet Variation&quot;                  
+##  [7] &quot;Queen&#39;s Gambit&quot;                                                              
+##  [8] &quot;Queen&#39;s Gambit Declined: Traditional Variation&quot;                              
+##  [9] &quot;Queen&#39;s Gambit Declined&quot;                                                     
+## [10] &quot;Queen&#39;s Gambit Declined: Baltic Defense&quot;                                     
+## [11] &quot;Queen&#39;s Gambit Declined: Harrwitz Attack, Orthodox Defense&quot;                  
+## [12] &quot;Queen&#39;s Gambit Declined: Chigorin Defense, Exchange Variation&quot;               
+## [13] &quot;Queen&#39;s Gambit Declined: Modern Variation, Knight Defense&quot;                   
+## [14] &quot;Queen&#39;s Gambit Declined: Albin Countergambit, Fianchetto Variation, Bg4 Line&quot;
+## [15] &quot;Queen&#39;s Gambit Declined: Exchange Variation&quot;                                 
+## [16] &quot;Queen&#39;s Gambit Declined: Modern Variation&quot;                                   
+## [17] &quot;Queen&#39;s Gambit Declined: Austrian Defense&quot;                                   
+## [18] &quot;Queen&#39;s Gambit Declined: Normal Defense&quot;                                     
+## [19] &quot;Queen&#39;s Gambit Declined: Pseudo-Tarrasch Variation&quot;                          
+## [20] &quot;Queen&#39;s Gambit Declined: Cambridge Springs Defense, Capablanca Variation&quot;    
+## [21] &quot;Queen&#39;s Gambit Declined: Albin Countergambit, Fianchetto Variation&quot;          
+## [22] &quot;Queen&#39;s Gambit Declined: Lasker Defense&quot;                                     
+## [23] &quot;Queen&#39;s Gambit Declined: Orthodox Defense, Botvinnik Variation&quot;              
+## [24] &quot;Queen&#39;s Gambit Declined: Albin Countergambit&quot;                                
+## [25] &quot;Queen&#39;s Gambit Declined: Janowski Variation&quot;                                 
+## [26] &quot;Queen&#39;s Gambit Declined: Albin Countergambit, Normal Line&quot;                   
+## [27] &quot;Queen&#39;s Gambit Accepted: Normal Variation, Traditional System&quot;               
+## [28] &quot;Queen&#39;s Gambit Declined: Cambridge Springs Defense&quot;                          
+## [29] &quot;Queen&#39;s Gambit Declined: Semi-Tarrasch Defense&quot;                              
+## [30] &quot;Queen&#39;s Gambit Declined: Harrwitz Attack&quot;                                    
+## [31] &quot;Queen&#39;s Gambit Declined: Neo-Orthodox Variation, Main Line&quot;                  
+## [32] &quot;Queen&#39;s Gambit Declined: Charousek Variation&quot;                                
+## [33] &quot;Queen&#39;s Gambit Declined: Chigorin Defense&quot;                                   
+## [34] &quot;Queen&#39;s Gambit Declined: Semi-Tarrasch Defense, Exchange Variation&quot;          
+## [35] &quot;Queen&#39;s Gambit Declined: Three Knights Variation&quot;                            
+## [36] &quot;Queen&#39;s Gambit Declined: Marshall Defense, Tan Gambit&quot;</code></pre>
+<p>That’s 36 variations just in a single opening. For my analysis, I want all of the variations to be classified just as the base opening. Here I’ll standardize the opening names a little bit.</p>
 <pre class="r"><code>lichess_data$Opening[grepl(&quot;Caro-Kann&quot;,lichess_data$Opening,
                    fixed = TRUE)] &lt;- &quot;Caro-Kann Defense&quot;
 
