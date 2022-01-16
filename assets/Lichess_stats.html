@@ -585,16 +585,24 @@ ggplot(aes(x = Date, y = my_elo, color = Event)) +
 </div>
 <div id="squares" class="section level3">
 <h3>Squares</h3>
-<p>First I’ll count the number of times a piece lands on each square. I won’t include the full code for generating counts because it is incredibly long and repetitive, but I’ll show the process for a single square. This process can be repeated for all 64 squares on the board.</p>
-<pre class="r"><code>num_e4 &lt;- c()
-for(i in moves){
-  e4 &lt;- i[grepl(&quot;e4&quot;,i,fixed = TRUE)]
-  num_e4 &lt;- append(num_e4, e4)
-}
-num_e4 &lt;- length(num_e4)
-num_e4</code></pre>
-<pre><code>## [1] 3538</code></pre>
-<p>The e4 square is moved to 3538 times.</p>
+<p>For this section, I’ll actually briefly return to some data wrangling. I want to generate counts for the number of times a piece moves to each square on the board. This can be accomplished with the following loop:</p>
+<pre class="r"><code>values &lt;- c() #for storing counts
+files &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;,&quot;f&quot;,&quot;g&quot;,&quot;h&quot;)
+ranks &lt;- c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;)
+
+#loop through each file,rank (to get a square)
+for(i in files){
+  for(j in ranks){
+    #we now have a selected square with coordinates i,j
+    count_temp &lt;- c()
+    for(k in moves){
+      temp &lt;- k[grepl(paste(i,j,sep = &quot;&quot;),k,fixed = TRUE)]
+      count_temp &lt;- append(count_temp,temp)
+      }
+    count_temp &lt;- length(count_temp)
+    values &lt;- append(values, count_temp) #store counts
+  }
+}</code></pre>
 <p>Once I have counts for each square on the board, I’ll make this into a data frame and create a heat map.</p>
 <pre class="r"><code>grid &lt;- data.frame(file = c(&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,
                             &quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,
@@ -612,14 +620,7 @@ num_e4</code></pre>
                             1,2,3,4,5,6,7,8,
                             1,2,3,4,5,6,7,8,
                             1,2,3,4,5,6,7,8),
-                   count = c(num_a1,num_a2,num_a3,num_a4,num_a5,num_a6,num_a7,num_a8,
-                             num_b1,num_b2,num_b3,num_b4,num_b5,num_b6,num_b7,num_b8,
-                             num_c1,num_c2,num_c3,num_c4,num_c5,num_c6,num_c7,num_c8,
-                             num_d1,num_d2,num_d3,num_d4,num_d5,num_d6,num_d7,num_d8,
-                             num_e1,num_e2,num_e3,num_e4,num_e5,num_e6,num_e7,num_e8,
-                             num_f1,num_f2,num_f3,num_f4,num_f5,num_f6,num_f7,num_f8,
-                             num_g1,num_g2,num_g3,num_g4,num_g5,num_g6,num_g7,num_g8,
-                             num_h1,num_h2,num_h3,num_h4,num_h5,num_h6,num_h7,num_h8))
+                   count = values)
 
 #heatmap
 ggplot(grid, aes(x = file, y = rank, fill = count)) +
